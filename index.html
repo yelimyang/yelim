@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>로또번호 생성기</title>
+  <style>
+    body {
+      text-align: center;
+      padding-top: 100px;
+    }
+    
+    h1 {
+      font-family: Arial, sans-serif;
+    }
+    
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    
+    input {
+      margin: 10px;
+      padding: 5px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <h1>로또번호 생성기</h1>
+  <input type="number" id="number1" min="1" max="45">
+  <input type="number" id="number2" min="1" max="45">
+  <input type="number" id="number3" min="1" max="45">
+  <input type="number" id="number4" min="1" max="45">
+  <input type="number" id="number5" min="1" max="45">
+  <input type="number" id="number6" min="1" max="45">
+  <br>
+  <button onclick="generateLottoNumbers()">로또번호 생성</button>
+  <h2 id="lottoNumbers"></h2>
+  
+  <script>
+    function generateLottoNumbers() {
+      var userNumbers = [];
+      for (var i = 1; i <= 6; i++) {
+        var inputNumber = document.getElementById("number" + i).value;
+        if (inputNumber !== "" && !isNaN(inputNumber) && parseInt(inputNumber) >= 1 && parseInt(inputNumber) <= 45) {
+          userNumbers.push(parseInt(inputNumber));
+        } else if (inputNumber !== "") {
+          alert("1부터 45까지의 범위 내에서 숫자를 입력해주세요.");
+          return;
+        }
+      }
+      
+      if (hasDuplicates(userNumbers)) {
+        alert("중복된 번호를 입력하셨습니다. 다시 입력해주세요.");
+        return;
+      }
+      
+      var numbers = [];
+      while (numbers.length < 6) {
+        var randomNumber = Math.floor(Math.random() * 45) + 1;
+        if (!numbers.includes(randomNumber) && !userNumbers.includes(randomNumber)) {
+          numbers.push(randomNumber);
+        }
+      }
+      
+      var finalNumbers = numbers.slice(0, 6 - userNumbers.length).concat(userNumbers);
+      document.getElementById("lottoNumbers").innerText = finalNumbers.join(", ");
+    }
+    
+    function hasDuplicates(array) {
+      return (new Set(array)).size !== array.length;
+    }
+  </script>
+</body>
+</html>
